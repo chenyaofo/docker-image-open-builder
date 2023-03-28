@@ -17,16 +17,19 @@ jobs:
         mask-variables: false
         export-variables: true
         keys-case: bypass
-    - name: Free disk space
-      run: |
-        df -h
-        sudo apt-get remove -y azure-cli google-cloud-sdk hhvm google-chrome-stable firefox powershell
-        sudo apt-get autoremove -y
-        sudo apt-get clean
-        sudo swapoff -a
-        sudo rm -f /swapfile
-        docker rmi $(docker image ls -aq)
-        df -h
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
+        # this might remove tools that are actually needed,
+        # if set to "true" but frees about 6 GB
+        tool-cache: false
+        # all of these default to true, but feel free to set to
+        # "false" if necessary for your workflow
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        swap-storage: true
     - name: Build docker image
       run: |
         wget $DOCKERFILE -O Dockerfile
