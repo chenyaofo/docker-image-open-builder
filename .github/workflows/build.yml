@@ -17,15 +17,6 @@ jobs:
         mask-variables: false
         export-variables: true
         keys-case: bypass
-    # - name: Free Disk Space (Ubuntu)
-    #   uses: jlumbroso/free-disk-space@main
-    #   with:
-    #     tool-cache: false
-    #     android: true
-    #     dotnet: true
-    #     haskell: true
-    #     large-packages: true
-    #     swap-storage: true
     - name: Prepare Dockerfile
       run: |
         wget $DOCKERFILE -O Dockerfile
@@ -36,9 +27,9 @@ jobs:
         username: ${{secrets.DOCKER_USER}}
         password: ${{secrets.DOCKER_PASS}}
     - name: Build and push
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          platforms: linux/amd64
-          push: true
-          tags: $REGISTRY/$REGISTRY_NS/$TAG_NAME:$TAG_VERSION
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        platforms: linux/amd64
+        push: true
+        tags: $REGISTRY/$REGISTRY_NS/$TAG_NAME:$TAG_VERSION
