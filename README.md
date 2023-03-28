@@ -6,7 +6,7 @@ Please set secrets `DOCKER_USER` and `DOCKER_PASS` for the username and password
 
 ## Step2: Modify `.env`
 
-Please modify the `.env` file to assign the build details.
+Please modify the `.env` file to assign the build details as follows and push the changes to the repo.
 
 ```
 DOCKERFILE=https://raw.githubusercontent.com/chenyaofo/docker-image-open-builder/main/Dockerfile
