@@ -1,0 +1,14 @@
+name: Open Docker Builder
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dotenv Action
+      uses: falti/dotenv-action@v1.0.4
+    - name: Print
+      run: |
+        echo ${{ steps.dotenv.outputs.REGISTRY }}
