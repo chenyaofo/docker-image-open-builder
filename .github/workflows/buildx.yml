@@ -23,11 +23,12 @@ jobs:
         export-variables: true
         keys-case: bypass
     - name: Prepare Dockerfile
+      id: prepare-dockerfile
       run: |
         wget ${{ github.event.inputs.dockerfile_url }} -O Dockerfile
-        echo "$(head -n 1 Dockerfile | sed 's/#//g' | sed 's/ //g')" >> $DOCKER_TAG
+        echo "docker_tag=$(head -n 1 Dockerfile | sed 's/#//g' | sed 's/ //g')" >> $GITHUB_OUTPUT
         echo "Docker TAG:"
-        echo $DOCKER_TAG
+        echo "(head -n 1 Dockerfile | sed 's/#//g' | sed 's/ //g')"
     - name: Login to Container Registry
       uses: docker/login-action@v2
       with:
@@ -40,4 +41,4 @@ jobs:
         context: .
         platforms: linux/amd64
         push: true
-        tags: ${{env.DOCKER_TAG}}
+        tags: ${{ steps.prepare-dockerfile.outputs.docker_tag }}
