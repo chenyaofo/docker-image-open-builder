@@ -6,7 +6,7 @@ on:
       dockerfile_url:
         description: 'Dockerfile URL'
         required: true
-        default: 'null'
+        default: 'https://...'
 
 jobs:
   build:
