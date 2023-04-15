@@ -1,0 +1,41 @@
+name: Open Docker Builder via URL
+
+on:
+  workflow_dispatch:
+    inputs:
+      dockerfile_url:
+        description: 'Dockerfile URL'
+        required: true
+        default: 'null'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Dotenv Action
+      uses: falti/dotenv-action@v1.0.4
+      with:
+        path: .env
+        log-variables: true
+        mask-variables: false
+        export-variables: true
+        keys-case: bypass
+    - name: Prepare Dockerfile
+      run: |
+        wget ${{ github.event.inputs.dockerfile_url }} -O Dockerfile
+        export DOCKER_TAG=$(head -n 1 Dockerfile | sed 's/#//g' | sed 's/ //g')
+    - name: Login to Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{env.REGISTRY}}
+        username: ${{secrets.DOCKER_USER}}
+        password: ${{secrets.DOCKER_PASS}}
+    - name: Build and push
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        platforms: linux/amd64
+        push: true
+        tags: ${{env.DOCKER_TAG}}
