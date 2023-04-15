@@ -18,14 +18,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Dotenv Action
-      uses: falti/dotenv-action@v1.0.4
-      with:
-        path: .env
-        log-variables: true
-        mask-variables: false
-        export-variables: true
-        keys-case: bypass
     - name: Prepare Dockerfile
       id: prepare-dockerfile
       run: |
