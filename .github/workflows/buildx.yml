@@ -26,6 +26,8 @@ jobs:
       run: |
         wget ${{ github.event.inputs.dockerfile_url }} -O Dockerfile
         export DOCKER_TAG=$(head -n 1 Dockerfile | sed 's/#//g' | sed 's/ //g')
+        echo "Docker TAG:"
+        echo $DOCKER_TAG
     - name: Login to Container Registry
       uses: docker/login-action@v2
       with:
