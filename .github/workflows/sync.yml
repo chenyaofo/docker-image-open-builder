@@ -16,7 +16,7 @@ on:
       sync_yaml_url:
         description: 'Sync YAML URL'
         required: true
-        default: 'https://...'
+        default: 'https://gitlab.com/chenyaofo/dockerfiles/-/raw/main/sync-docker-images/sync.yaml'
 
 jobs:
   build:
