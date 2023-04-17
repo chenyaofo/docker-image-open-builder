@@ -1,0 +1,36 @@
+name: Sync Docker Images via URL
+
+on:
+  workflow_dispatch:
+    inputs:
+      docker_registry:
+        description: 'Docker Registry to Push'
+        required: true
+        default: 'registry.cn-hongkong.aliyuncs.com'
+      namespace:
+        description: 'Docker Namespace to Push'
+        required: true
+        default: 'dockerhub-mirrors'
+      sync_yaml_url:
+        description: 'Sync YAML URL'
+        required: true
+        default: 'https://...'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Prepare Sync YAML
+      id: prepare-sync-yaml
+      run: |
+        wget ${{ github.event.inputs.sync_yaml_url }} -O sync.yaml
+        echo "Sync YAML:"
+        cat sync.yaml
+    - name: Login to Container Registry
+      run: |
+        skopeo login --username ${{secrets.DOCKER_USER}} --password ${{secrets.DOCKER_PASS}} ${{ github.event.inputs.docker_registry }}
+    - name: Syncing Docker Images
+      run: |
+        skopeo sync --src yaml --dest docker sync.yaml ${{ github.event.inputs.docker_registry }}/${{ github.event.inputs.namespace }}
