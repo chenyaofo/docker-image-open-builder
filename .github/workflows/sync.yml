@@ -1,8 +1,6 @@
 name: Sync Docker Images via URL
 
 on:
-  schedule:
-    - cron: "0 1 * * *"
   workflow_dispatch:
     inputs:
       docker_registry:
